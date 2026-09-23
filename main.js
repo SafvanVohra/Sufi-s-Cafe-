@@ -19,6 +19,10 @@ renderer.shadowMap.enabled = false; // Disable shadows globally since they sever
 // Orbit Controls
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
+controls.enableZoom = false; // Prevent wheel zoom so normal page scrolling works
+controls.enablePan = false;
+controls.dampingFactor = 0.05;
+controls.rotateSpeed = 0.8;
 
 // Responsive Camera
 const updateCameraAndRenderer = () => {
@@ -76,8 +80,8 @@ let currentFrame = 0;
 let frameDelay = 1;
 let frameCount = 0;
 let cupGroup = null;
-let coffeeStarted = false;
-let scrollTriggered = false;
+let coffeeStarted = true;
+let animTime = 0;
 
 const toRadians = deg => THREE.MathUtils.degToRad(deg);
 
@@ -115,11 +119,11 @@ loader.load(
       scene.add(mesh);
     });
 
-    // Cup
+    // Cup - positioned in pouring pose immediately from the start
     cupGroup = allChildren.find(child => child.name === 'samplecup');
     if (cupGroup) {
-      cupGroup.rotation.set(initialRotation.x, initialRotation.y, initialRotation.z);
-      cupGroup.position.set(initialPosition.x, initialPosition.y, initialPosition.z);
+      cupGroup.rotation.set(finalRotation.x, finalRotation.y, finalRotation.z);
+      cupGroup.position.set(finalPosition.x, finalPosition.y, finalPosition.z);
       scene.add(cupGroup);
     } else {
       console.warn('⚠️ Cup group not found.');
@@ -134,8 +138,16 @@ loader.load(
       }
     });
 
+    // Start pouring animation immediately
+    coffeeStarted = true;
+    if (fluidFrames[0]) fluidFrames[0].visible = true;
+
     const el = document.getElementById('progress-container');
-    if (el) el.style.display = 'none';
+    if (el) {
+      el.style.transition = 'opacity 0.4s ease';
+      el.style.opacity = '0';
+      setTimeout(() => { el.style.display = 'none'; }, 400);
+    }
 
     animate();
   },
@@ -151,61 +163,38 @@ loader.load(
   }
 );
 
-// Scroll Trigger
-window.addEventListener('scroll', () => {
-  if (!scrollTriggered && window.scrollY > 50) {
-    scrollTriggered = true;
-    const scrollText = document.getElementById('scroll-instruction');
-    if (scrollText) scrollText.style.display = 'none';
-  }
-});
-
-// Intersection Observer to Pause Render Loop when Off-Screen
-let isHeroVisible = true;
-const heroObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    isHeroVisible = entry.isIntersecting;
-  });
-}, { threshold: 0 });
-
-const heroSection = document.getElementById('hero');
-if (heroSection) heroObserver.observe(heroSection);
+// Check if Hero Section is visible in the viewport
+const isHeroInView = () => {
+  const hero = document.getElementById('hero');
+  if (!hero) return true;
+  const rect = hero.getBoundingClientRect();
+  return rect.bottom > 0 && rect.top < window.innerHeight;
+};
 
 // Animate
 function animate() {
   requestAnimationFrame(animate);
 
-  // Suspend all heavy ThreeJS calculations automatically when scrolled past the hero!
-  if (!isHeroVisible) return;
+  // Suspend heavy rendering only when hero is completely scrolled off-screen
+  if (!isHeroInView()) return;
 
-  if (cupGroup && scrollTriggered && !coffeeStarted) {
-    cupGroup.rotation.x += (finalRotation.x - cupGroup.rotation.x) * 0.02;
-    cupGroup.rotation.y += (finalRotation.y - cupGroup.rotation.y) * 0.02;
-    cupGroup.rotation.z += (finalRotation.z - cupGroup.rotation.z) * 0.02;
-    cupGroup.position.x += (finalPosition.x - cupGroup.position.x) * 0.02;
-    cupGroup.position.y += (finalPosition.y - cupGroup.position.y) * 0.02;
-    cupGroup.position.z += (finalPosition.z - cupGroup.position.z) * 0.02;
-
-    const rot = cupGroup.rotation, pos = cupGroup.position;
-    if (
-      Math.abs(rot.x - finalRotation.x) < 0.3 &&
-      Math.abs(rot.y - finalRotation.y) < 0.3 &&
-      Math.abs(rot.z - finalRotation.z) < 0.3 &&
-      Math.abs(pos.x - finalPosition.x) < 0.3 &&
-      Math.abs(pos.y - finalPosition.y) < 0.3 &&
-      Math.abs(pos.z - finalPosition.z) < 0.3
-    ) {
-      coffeeStarted = true;
-      if (fluidFrames[0]) fluidFrames[0].visible = true;
-    }
-  }
-
+  // Continuous fluid pouring animation loop and synced floating hover motion right from the start
   if (coffeeStarted && fluidFrames.length > 0) {
     frameCount++;
     if (frameCount % frameDelay === 0) {
       fluidFrames[currentFrame].visible = false;
       currentFrame = (currentFrame + 1) % fluidFrames.length;
       fluidFrames[currentFrame].visible = true;
+    }
+
+    // Gentle breathing hover motion: keeps cup and pouring liquid in perfect alignment
+    animTime += 0.025;
+    const floatY = Math.sin(animTime) * 0.06;
+    if (cupGroup) {
+      cupGroup.position.y = finalPosition.y + floatY;
+    }
+    if (fluidFrames[currentFrame]) {
+      fluidFrames[currentFrame].position.y = fluidPosition.y + floatY;
     }
   }
 
