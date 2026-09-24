@@ -27,5 +27,5 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
 if __name__ == '__main__':
     http.server.ThreadingHTTPServer.allow_reuse_address = True
     with http.server.ThreadingHTTPServer(("", PORT), CustomHandler) as httpd:
-        print(f"Books & Bricks server running at http://localhost:{PORT}")
+        print(f"Sufis Cafe server running at http://localhost:{PORT}")
         httpd.serve_forever()

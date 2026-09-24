@@ -1,41 +1,24 @@
 <div align="center">
-  <img src="images/LOGO.webp" alt="Books and Bricks Logo" width="200" />
+  <img src="images/LOGO.webp" alt="Sufis Cafe Logo" width="200" />
 </div>
 
-<h1 align="center">Books & Bricks Café</h1>
+<h1 align="center">☕ Sufis Cafe / Sufis De Cafe (Kheda)</h1>
 
 <p align="center">
-  <b>A highly immersive, performance-optimized static cafe website powered by Three.js WebGL rendering.</b>
+  <b>A highly immersive, performance-optimized cafe website powered by Three.js WebGL rendering.</b>
 </p>
-
-<div align="center">
-
-  [![Live Demo](https://img.shields.io/badge/Live-booksandbricks.in-success?style=for-the-badge)](https://booksandbricks.in/)
-
-</div>
 
 ---
 
-## 📸 The Experience
+## 📍 About Sufis Cafe
 
-<div align="center">
-  <img src="images/ss1.png" alt="Main Showcase" width="98%" style="border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);" />
-</div>
+Located right alongside or in the immediate vicinity of **Dawat Restaurant** on the Kheda highway, **Sufis Cafe (Sufis De Cafe)** offers a warm, refreshing stop for highway travellers, families, and food enthusiasts.
 
-<div align="center">
-  <img src="images/ss2.png" alt="Screenshot 2" width="48%" style="border-radius: 12px; margin: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);" />
-  <img src="images/ss3.png" alt="Screenshot 3" width="48%" style="border-radius: 12px; margin: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);" />
-  <img src="images/ss4.png" alt="Screenshot 4" width="48%" style="border-radius: 12px; margin: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);" />
-  <img src="images/ss5.png" alt="Screenshot 5" width="48%" style="border-radius: 12px; margin: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);" />
-  <img src="images/ss6.png" alt="Screenshot 6" width="48%" style="border-radius: 12px; margin: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);" />
-  <img src="images/ss7.png" alt="Screenshot 7" width="48%" style="border-radius: 12px; margin: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);" />
-</div>
+- **Address:** Next to Dawat Restaurant, Nearby Coca-Cola Plant, Opposite Sumar Logistics, Kheda-Ahmedabad Highway, Kajipura, Kheda, Gujarat - 387120
+- **Phone Number:** [+91 83208 12121](tel:+918320812121)
+- **Instagram Profile:** [@dawatrestaurant_](https://www.instagram.com/dawatrestaurant_)
 
-<br>
-
-Nestled in the heart of Srinagar, **Books & Bricks Café** required a landing page that properly communicated its warm, rustic, and authentic aesthetic. This repository contains the custom-built frontend application showcasing the cafe. 
-
-Highlighting the experience is a **fully interactive, 3D rotating coffee cup** deployed via a Three.js canvas layer, offering users a deeply immersive initial impression before smoothly transitioning into elegant storytelling and interactive menus.
+---
 
 ## Technical Highlights
 
@@ -53,25 +36,13 @@ Highlighting the experience is a **fully interactive, 3D rotating coffee cup** d
 
 ## Local Setup
 
-Since this is a deeply optimized static application, no complex build dependencies are required!
-
-1. Clone the repository:
+1. Clone or open the repository.
+2. Run a local development server:
    ```bash
-   git clone https://github.com/AlishaBijapure/BooksAndBricks.git
+   python serve.py
    ```
-2. Navigate into the directory:
-   ```bash
-   cd BooksAndBricks
-   ```
-3. Run a local development server (necessary to bypass browser CORS policies for rendering the 3D `.glb` module):
-   ```bash
-   # If you use python:
-   python3 -m http.server 8000
-   
-   # Or using Node.js:
-   npx serve .
-   ```
-4. Open the browser to `http://localhost:8000`
+3. Open the browser to `http://localhost:3000`
 
 ---
-*Built with 🤎 for the Books & Bricks community.*
+*Built with ☕ for Sufis Cafe.*
+
